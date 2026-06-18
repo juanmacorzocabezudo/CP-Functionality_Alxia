@@ -1,0 +1,45 @@
+{
+  "id": "e425495b-7717-4f65-a538-6528bf549000",
+  "name": "CP - Functionality",
+  "publisher": "Alxia Consultoria e innovación",
+  "brief": "CP - Functionality for Business Central",
+  "description": "CP - Functionality for Business Central",
+  "version": "1.26.2.4",
+  "EULA": "https://alxia.es/",
+  "help": "https://alxia.es/",
+  "url": "https://alxia.es/",
+  "runtime": "14.0",
+  "target": "Cloud",
+  "application": "25.0.0.0",
+  "platform": "27.0.50937.0",
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true,
+    "applyToDevExtension": false
+  },
+  "features": [
+    "TRANSLATIONFILE"
+  ],
+  "dependencies": [
+    {
+      "id": "f2103434-723a-4bcf-8062-8398ff69bc9e",
+      "name": "Formatos Alxia",
+      "version": "1.18.0.48",
+      "publisher": "Alxia"
+    }
+  ],
+  "supportedLocales": [
+    "en-US",
+    "es-ES"
+  ],
+  "idRanges": [
+    {
+      "from": 50000,
+      "to": 50179
+    }
+  ],
+  "build": {
+    "by": "AL Language Extension,17.0.2273547"
+  }
+}

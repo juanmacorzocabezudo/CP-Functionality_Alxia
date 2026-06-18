@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="Code_ItemVariant">
+          <DataField>Code_ItemVariant</DataField>
+        </Field>
+        <Field Name="ItemNo_ItemVariant">
+          <DataField>ItemNo_ItemVariant</DataField>
+        </Field>
+        <Field Name="Description_ItemVariant">
+          <DataField>Description_ItemVariant</DataField>
+        </Field>
+        <Field Name="Description2_ItemVariant">
+          <DataField>Description2_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALACodProveedor_ItemVariant">
+          <DataField>AGRALACodProveedor_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALANombreProveedor_ItemVariant">
+          <DataField>AGRALANombreProveedor_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALADescripcion_ItemVariant">
+          <DataField>AGRALADescripcion_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAFichaTecnica_ItemVariant">
+          <DataField>AGRALAFichaTecnica_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAFechaVencimientoFT_ItemVariant">
+          <DataField>AGRALAFechaVencimientoFT_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAOMG_ItemVariant">
+          <DataField>AGRALAOMG_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAIngredienetesOMGText_ItemVariant">
+          <DataField>AGRALAIngredienetesOMGText_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAIrradiado_ItemVariant">
+          <DataField>AGRALAIrradiado_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAIrradiadoText_ItemVariant">
+          <DataField>AGRALAIrradiadoText_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALADeclaraciondeConformidad_ItemVariant">
+          <DataField>AGRALADeclaraciondeConformidad_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAFechaVigorDC_ItemVariant">
+          <DataField>AGRALAFechaVigorDC_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAEnsayosMigracion_ItemVariant">
+          <DataField>AGRALAEnsayosMigracion_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAOtrosEnsayos_ItemVariant">
+          <DataField>AGRALAOtrosEnsayos_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALANHA_ItemVariant">
+          <DataField>AGRALANHA_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAFichaSeguridad_ItemVariant">
+          <DataField>AGRALAFichaSeguridad_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAFechaVencimientoFS_ItemVariant">
+          <DataField>AGRALAFechaVencimientoFS_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAingredientesOMG_ItemVariant">
+          <DataField>AGRALAingredientesOMG_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAIngredientes_ItemVariant">
+          <DataField>AGRALAIngredientes_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAIngredientes2_ItemVariant">
+          <DataField>AGRALAIngredientes2_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAAlergenos_ItemVariant">
+          <DataField>AGRALAAlergenos_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAAlergenosContenidoText_ItemVariant">
+          <DataField>AGRALAAlergenosContenidoText_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALAAlergenosTrazasText_ItemVariant">
+          <DataField>AGRALAAlergenosTrazasText_ItemVariant</DataField>
+        </Field>
+        <Field Name="AGRALANombreReceta">
+          <DataField>AGRALANombreReceta</DataField>
+        </Field>
+        <Field Name="Picture">
+          <DataField>Picture</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>
