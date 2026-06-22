@@ -7,7 +7,7 @@ page 50004 "Lista de Eventos"
     Editable = false;
     PageType = List;
     SourceTable = Evento;
-    SourceTableView = SORTING("Codigo Evento")ORDER(Ascending);
+    SourceTableView = SORTING("Codigo Evento") ORDER(Ascending);
 
     //WHERE(Estado = FILTER(Presupuesto | Aceptado | Rechazado | Anulado));
     layout
@@ -154,7 +154,8 @@ page 50004 "Lista de Eventos"
                 begin
                     Rcd_Eventos.RESET;
                     Rcd_Eventos.SETRANGE("Codigo Evento", Rec."Codigo Evento");
-                    REPORT.RUNMODAL(50007, TRUE, FALSE, Rcd_Eventos)end;
+                    REPORT.RUNMODAL(50007, TRUE, FALSE, Rcd_Eventos)
+                end;
             }
             action("Cuadrante Eventos")
             {
@@ -204,52 +205,52 @@ page 50004 "Lista de Eventos"
                     rRecEvento.SetRange("Codigo Recurso", 'REC00005');
                     //rRecEvento.SetRange("Codigo Evento", Rec."Codigo Evento");
                     //rRecEvento.SetRange(Tipo, rRecEvento.Tipo::Personal);
-                    if rRecEvento.FindFirst()then begin
+                    if rRecEvento.FindFirst() then begin
                         rAsigEvento.Reset();
                         rAsigEvento.SetRange("Codigo Evento", Rec."Codigo Evento");
                         rAsigEvento.SetRange("Linea Recurso Evento", rRecEvento.Linea);
                         pAsigRec.SetTableView(rAsigEvento);
                         pAsigRec.Run();
-                    /*       
-                        RunObject = Page 50013;
-                        RunPageLink = "Codigo Evento" = FIELD("Codigo Evento"),
-                                   "Linea Recurso Evento" = const(10000); */
+                        /*       
+                            RunObject = Page 50013;
+                            RunPageLink = "Codigo Evento" = FIELD("Codigo Evento"),
+                                       "Linea Recurso Evento" = const(10000); */
                     end;
                 end;
-            /*  trigger OnAction()
-                 var
-                     recRecursosEv: Record "Recursos Evento";
-                     recAsigRecursos: Record "Asignacion Recursos Eventos";
-                 begin
-                     recRecursosEv.Reset();
-                     recRecursosEv.SetRange("Codigo Evento", Rec."Codigo Evento");
-                     recRecursosEv.SetRange("Codigo Recurso", 'REC00005');
-                     if recRecursosEv.FindFirst() then begin
-                         recAsigRecursos.Reset();
-                         recAsigRecursos."Codigo Evento" := Rec."Codigo Evento";
-                         recAsigRecursos."Linea Recurso Evento" := recRecursosEv.Linea;
-                         recAsigRecursos.SetRange("Codigo Evento", Rec."Codigo Evento");
-                         if recAsigRecursos.FindFirst() then
-                             //if recAsigRecursos.FindFirst() then
-                             PAGE.RUNMODAL(PAGE::"Asignacion Recursos Evento", recAsigRecursos);
-                     end;
+                /*  trigger OnAction()
+                     var
+                         recRecursosEv: Record "Recursos Evento";
+                         recAsigRecursos: Record "Asignacion Recursos Eventos";
+                     begin
+                         recRecursosEv.Reset();
+                         recRecursosEv.SetRange("Codigo Evento", Rec."Codigo Evento");
+                         recRecursosEv.SetRange("Codigo Recurso", 'REC00005');
+                         if recRecursosEv.FindFirst() then begin
+                             recAsigRecursos.Reset();
+                             recAsigRecursos."Codigo Evento" := Rec."Codigo Evento";
+                             recAsigRecursos."Linea Recurso Evento" := recRecursosEv.Linea;
+                             recAsigRecursos.SetRange("Codigo Evento", Rec."Codigo Evento");
+                             if recAsigRecursos.FindFirst() then
+                                 //if recAsigRecursos.FindFirst() then
+                                 PAGE.RUNMODAL(PAGE::"Asignacion Recursos Evento", recAsigRecursos);
+                         end;
 
-                 end; */
+                     end; */
             }
-        /*  action("Informe Personal Falta en Eventos")
-             {
-                 Caption = 'Informe Personal Falta en Eventos';
-                 ApplicationArea = All;
-                 Image = Period;
-                 Promoted = true;
-                 PromotedCategory = "Report";
-                 PromotedIsBig = true;
+            /*  action("Informe Personal Falta en Eventos")
+                 {
+                     Caption = 'Informe Personal Falta en Eventos';
+                     ApplicationArea = All;
+                     Image = Period;
+                     Promoted = true;
+                     PromotedCategory = "Report";
+                     PromotedIsBig = true;
 
-                 trigger OnAction()
-                 begin
-                     REPORT.RUNMODAL(50010);
-                 end;
-             } */
+                     trigger OnAction()
+                     begin
+                         REPORT.RUNMODAL(50010);
+                     end;
+                 } */
         }
         area(navigation)
         {
@@ -277,7 +278,7 @@ page 50004 "Lista de Eventos"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 RunObject = Page "Movimientos comisiones";
-                RunPageView = SORTING("Entry No.")ORDER(Ascending)WHERE(NoEvento=CONST('<>"''"'));
+                RunPageView = SORTING("Entry No.") ORDER(Ascending) WHERE(NoEvento = CONST('<>"''"'));
             }
             action("Movs. fichajes empleados")
             {
@@ -295,9 +296,9 @@ page 50004 "Lista de Eventos"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-            /*  RunObject = Page 50021;
-                 RunPageLink = "Customer No." = FIELD("Codigo Cliente");
-                 RunPageView = SORTING("Customer No.", "Item No.", Tramo); */
+                /*  RunObject = Page 50021;
+                     RunPageLink = "Customer No." = FIELD("Codigo Cliente");
+                     RunPageView = SORTING("Customer No.", "Item No.", Tramo); */
             }
             action("AjusProvincia")
             {
@@ -311,7 +312,7 @@ page 50004 "Lista de Eventos"
 
                 trigger OnAction()
                 begin
-                    if Confirm('Esta seguro de actualizar los nombres de la poblacion y provincia?')then ValidadCP();
+                    if Confirm('Esta seguro de actualizar los nombres de la poblacion y provincia?') then ValidadCP();
                 end;
             }
         }
@@ -321,20 +322,31 @@ page 50004 "Lista de Eventos"
         Rec.SetCurrentKey("Fecha Evento");
         Rec.Ascending(false);
     end;
+
     trigger OnAfterGetRecord()
     begin
-        StyleText:=SetStyle;
+        StyleText := SetStyle;
     end;
-    var StyleText: Text[30];
-    procedure SetStyle(): Text[30]begin
-        CASE Rec.Estado OF Rec.Estado::Aceptado, Rec.Estado::Realizado: EXIT('Favorable');
-        Rec.Estado::Anulado, Rec.Estado::Rechazado: EXIT('Unfavorable');
-        Rec.Estado::Archivado: EXIT('Ambiguous');
-        Rec.Estado::Presupuesto: EXIT('StrongAccent');
-        ELSE
-            EXIT('Standard');
+
+    var
+        StyleText: Text[30];
+
+    procedure SetStyle(): Text[30]
+    begin
+        CASE Rec.Estado OF
+            Rec.Estado::Aceptado, Rec.Estado::Realizado:
+                EXIT('Favorable');
+            Rec.Estado::Anulado:
+                EXIT('Unfavorable');
+            Rec.Estado::Rechazado:
+                EXIT('Ambiguous');
+            Rec.Estado::Presupuesto:
+                EXIT('StrongAccent');
+            ELSE
+                EXIT('Standard');
         END;
     end;
+
     procedure AjustarProvincia()
     var
         recEventos: Record Evento;
@@ -345,35 +357,41 @@ page 50004 "Lista de Eventos"
         recEventos.Reset();
         recEventos.SetFilter(FechaAlta, '010124..130824');
         recEventos.FindFirst();
-        repeat Update:=false;
-            if IsNumeric(recEventos.Provincia)then begin
+        repeat
+            Update := false;
+            if IsNumeric(recEventos.Provincia) then begin
                 recArea.Reset();
                 recArea.SetRange(Code, recEventos.Provincia);
-                if recArea.FindFirst()then begin
-                    recEventos.Provincia:=recArea.Text;
-                    Update:=true;
+                if recArea.FindFirst() then begin
+                    recEventos.Provincia := recArea.Text;
+                    Update := true;
                 end;
             end;
-            if IsNumeric(recEventos."Provincia 2")then begin
+            if IsNumeric(recEventos."Provincia 2") then begin
                 recArea2.Reset();
                 recArea2.SetRange(Code, recEventos."Provincia 2");
-                if recArea2.FindFirst()then begin
-                    recEventos."Provincia 2":=recArea.Text;
-                    Update:=true;
+                if recArea2.FindFirst() then begin
+                    recEventos."Provincia 2" := recArea.Text;
+                    Update := true;
                 end;
             end;
             if Update then recEventos.Modify();
         until recEventos.Next() = 0;
     end;
-    local procedure IsNumeric(Value: Text): Boolean var
+
+    local procedure IsNumeric(Value: Text): Boolean
+    var
         i: Integer;
     begin
-        for i:=1 to StrLen(Value)do if(Format(Value[i])in['0' .. '9']) or (Format(Value[i])in['.'])then if StrLen(DelChr(Value, '=', DelChr(Value, '=', '.'))) <= 1 then exit(true)
+        for i := 1 to StrLen(Value) do if (Format(Value[i]) in ['0' .. '9']) or (Format(Value[i]) in ['.']) then
+                if StrLen(DelChr(Value, '=', DelChr(Value, '=', '.'))) <= 1 then
+                    exit(true)
                 else
                     exit(false)
             else
                 exit(false);
     end;
+
     procedure ValidadCP()
     var
         recEventos: Record Evento;
@@ -387,23 +405,24 @@ page 50004 "Lista de Eventos"
         recEventos.Reset();
         //recEventos.SetFilter(FechaAlta, '010124..130824');
         recEventos.FindFirst();
-        repeat Update:=false;
-            nroEvento:=recEventos."Codigo Evento";
+        repeat
+            Update := false;
+            nroEvento := recEventos."Codigo Evento";
             Progress.UPDATE();
             if recEventos."Codigo Postal" <> '' then begin
                 recPostCode.Reset();
                 recPostCode.SetRange(Code, recEventos."Codigo Postal");
-                if recPostCode.FindFirst()then begin
+                if recPostCode.FindFirst() then begin
                     recEventos.Validate("Codigo Postal");
-                    Update:=true;
+                    Update := true;
                 end;
             end;
             if recEventos."Codigo Postal 2" <> '' then begin
                 recPostCode.Reset();
                 recPostCode.SetRange(Code, recEventos."Codigo Postal 2");
-                if recPostCode.FindFirst()then begin
+                if recPostCode.FindFirst() then begin
                     recEventos.Validate("Codigo Postal 2");
-                    Update:=true;
+                    Update := true;
                 end;
             end;
             if Update then recEventos.Modify();
