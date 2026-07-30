@@ -2,6 +2,14 @@ pageextension 50010 AlxiaAssemblyOrder extends "Assembly Order"
 {
     layout
     {
+        // FIX: Forzar refresco visual cuando cambia la cantidad
+        modify(Quantity)
+        {
+            trigger OnAfterValidate()
+            begin
+                CurrPage.UPDATE(FALSE);
+            end;
+        }
         //modify(qua)
         addafter("Ending Date")
         {
@@ -29,10 +37,13 @@ pageextension 50010 AlxiaAssemblyOrder extends "Assembly Order"
                 trigger OnValidate()
                 begin
                     //++ AGRALA 863
-                    CASE Rec.AGRALAParteReceta OF Rec.AGRALAParteReceta::Impresa: xgStyleParteReceta:='ambiguous';
-                    Rec.AGRALAParteReceta::Cronograma: xgStyleParteReceta:='favorable';
+                    CASE Rec.AGRALAParteReceta OF
+                        Rec.AGRALAParteReceta::Impresa:
+                            xgStyleParteReceta := 'ambiguous';
+                        Rec.AGRALAParteReceta::Cronograma:
+                            xgStyleParteReceta := 'favorable';
                     END;
-                //-- AGRALA 863
+                    //-- AGRALA 863
                 end;
             }
             field(AGRALAObservaciones; Rec.AGRALAObservaciones)
@@ -112,8 +123,8 @@ pageextension 50010 AlxiaAssemblyOrder extends "Assembly Order"
                 PromotedIsBig = true;
                 PromotedCategory = Process;
                 RunObject = Page 50000;
-                RunPageLink = "No."=FIELD("Item No.");
-                RunPageView = SORTING("No.")ORDER(Ascending);
+                RunPageLink = "No." = FIELD("Item No.");
+                RunPageView = SORTING("No.") ORDER(Ascending);
             }
             action(AGRALAInfoCalidadCabecera)
             {
@@ -140,28 +151,37 @@ pageextension 50010 AlxiaAssemblyOrder extends "Assembly Order"
                     rlAssemblyLine.SETRANGE("Document No.", Rec."No.");
                     rlAssemblyLine.SETRANGE(Type, rlAssemblyLine.Type::Item);
                     rlAssemblyLine.FINDSET;
-                    REPEAT xlFiltros+='|' + rlAssemblyLine."No.";
+                    REPEAT
+                        xlFiltros += '|' + rlAssemblyLine."No.";
                         rlBOMComponent.SETRANGE("Parent Item No.", rlAssemblyLine."No.");
                         rlBOMComponent.SETRANGE(Type, rlBOMComponent.Type::Item);
-                        IF rlBOMComponent.FINDSET THEN REPEAT xlFiltros+='|' + rlBOMComponent."No.";
+                        IF rlBOMComponent.FINDSET THEN
+                            REPEAT
+                                xlFiltros += '|' + rlBOMComponent."No.";
                                 CLEAR(rlBOMComponent2);
                                 rlBOMComponent2.SETRANGE("Parent Item No.", rlBOMComponent."No.");
                                 rlBOMComponent2.SETRANGE(Type, rlBOMComponent.Type::Item);
-                                IF rlBOMComponent2.FINDSET THEN REPEAT xlFiltros+='|' + rlBOMComponent2."No.";
+                                IF rlBOMComponent2.FINDSET THEN
+                                    REPEAT
+                                        xlFiltros += '|' + rlBOMComponent2."No.";
                                         CLEAR(rlBOMComponent3);
                                         rlBOMComponent3.SETRANGE("Parent Item No.", rlBOMComponent2."No.");
                                         rlBOMComponent3.SETRANGE(Type, rlBOMComponent.Type::Item);
-                                        IF rlBOMComponent3.FINDSET THEN REPEAT xlFiltros+='|' + rlBOMComponent3."No.";
+                                        IF rlBOMComponent3.FINDSET THEN
+                                            REPEAT
+                                                xlFiltros += '|' + rlBOMComponent3."No.";
                                                 CLEAR(rlBOMComponent4);
                                                 rlBOMComponent4.SETRANGE("Parent Item No.", rlBOMComponent3."No.");
                                                 rlBOMComponent4.SETRANGE(Type, rlBOMComponent.Type::Item);
-                                                IF rlBOMComponent4.FINDSET THEN REPEAT xlFiltros+='|' + rlBOMComponent4."No.";
+                                                IF rlBOMComponent4.FINDSET THEN
+                                                    REPEAT
+                                                        xlFiltros += '|' + rlBOMComponent4."No.";
                                                     UNTIL rlBOMComponent4.NEXT = 0;
                                             UNTIL rlBOMComponent3.NEXT = 0;
                                     UNTIL rlBOMComponent2.NEXT = 0;
                             UNTIL rlBOMComponent.NEXT = 0;
                     UNTIL rlAssemblyLine.NEXT() = 0;
-                    xlFiltros:=COPYSTR(xlFiltros, 2);
+                    xlFiltros := COPYSTR(xlFiltros, 2);
                     rlItemVariant.SETFILTER("Item No.", xlFiltros);
                     PAGE.RUN(50075, rlItemVariant);
                 end;
@@ -208,7 +228,7 @@ pageextension 50010 AlxiaAssemblyOrder extends "Assembly Order"
                     CurrPage.SETSELECTIONFILTER(gt_cabecera);
                     ProductionReport.SETTABLEVIEW(gt_cabecera);
                     ProductionReport.RUNMODAL;
-                //++ #9969
+                    //++ #9969
                 end;
             }
         }
@@ -216,43 +236,52 @@ pageextension 50010 AlxiaAssemblyOrder extends "Assembly Order"
     trigger OnAfterGetCurrRecord()
     begin
         //++ AGRALA 863
-        CASE Rec.AGRALAParteReceta OF Rec.AGRALAParteReceta::Impresa: xgStyleParteReceta:='ambiguous';
-        Rec.AGRALAParteReceta::Cronograma: xgStyleParteReceta:='favorable';
+        CASE Rec.AGRALAParteReceta OF
+            Rec.AGRALAParteReceta::Impresa:
+                xgStyleParteReceta := 'ambiguous';
+            Rec.AGRALAParteReceta::Cronograma:
+                xgStyleParteReceta := 'favorable';
         END;
-    //-- AGRALA 863
+        //-- AGRALA 863
     end;
+
     trigger OnAfterGetRecord()
     begin
-        IsUnitCostEditable:=NOT Rec.IsStandardCostItem;
-        IsAsmToOrderEditable:=NOT Rec.IsAsmToOrder;
+        IsUnitCostEditable := NOT Rec.IsStandardCostItem;
+        IsAsmToOrderEditable := NOT Rec.IsAsmToOrder;
     end;
+
     trigger OnOpenPage()
     var
         rlAssemblyLine: Record 901;
         xlCentroCoste: Text[250];
     begin
         Rec.SETRANGE(Simulacion, FALSE);
-        IsUnitCostEditable:=TRUE;
-        IsAsmToOrderEditable:=TRUE;
+        IsUnitCostEditable := TRUE;
+        IsAsmToOrderEditable := TRUE;
         rec.UpdateWarningOnLines;
         //++ AGRALAMO 22003
         rlAssemblyLine.SETRANGE("Document Type", Rec."Document Type");
         rlAssemblyLine.SETRANGE("Document No.", Rec."No.");
-        IF rlAssemblyLine.FINDSET THEN REPEAT IF(rlAssemblyLine.Type = rlAssemblyLine.Type::" ") AND (rlAssemblyLine."No." = '')THEN BEGIN
-                    xlCentroCoste:=rlAssemblyLine.Description;
+        IF rlAssemblyLine.FINDSET THEN
+            REPEAT
+                IF (rlAssemblyLine.Type = rlAssemblyLine.Type::" ") AND (rlAssemblyLine."No." = '') THEN BEGIN
+                    xlCentroCoste := rlAssemblyLine.Description;
                 END;
-                IF(xlCentroCoste <> '') AND NOT(rlAssemblyLine.Type = rlAssemblyLine.Type::" ")THEN BEGIN
-                    rlAssemblyLine.AGRALACentroCoste:=xlCentroCoste;
+                IF (xlCentroCoste <> '') AND NOT (rlAssemblyLine.Type = rlAssemblyLine.Type::" ") THEN BEGIN
+                    rlAssemblyLine.AGRALACentroCoste := xlCentroCoste;
                 END;
                 rlAssemblyLine.MODIFY;
             UNTIL rlAssemblyLine.NEXT = 0;
-    //-- AGRALAMO 22003
+        //-- AGRALAMO 22003
     end;
-    var ItemAvailFormsMgt: Codeunit 353;
-    IsUnitCostEditable: Boolean;
-    IsAsmToOrderEditable: Boolean;
-    reportensamblado: Report 50017;
-    ProductionReport: Report 50051;
-    gt_cabecera: Record 900;
-    xgStyleParteReceta: Text[50];
+
+    var
+        ItemAvailFormsMgt: Codeunit 353;
+        IsUnitCostEditable: Boolean;
+        IsAsmToOrderEditable: Boolean;
+        reportensamblado: Report 50017;
+        ProductionReport: Report 50051;
+        gt_cabecera: Record 900;
+        xgStyleParteReceta: Text[50];
 }
