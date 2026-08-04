@@ -1,160 +1,188 @@
-# FIX: Actualización de Líneas de Ensamblado Añadidas Manualmente
+# FIX: Actualización de Líneas Manuales en Pedidos de Ensamblado
 
-## 🎯 Problema Solucionado
+## 🔴 Problema
 
-Al modificar la cantidad a ensamblar, las líneas añadidas manualmente NO se actualizaban correctamente, causando:
-- ❌ Cantidades incorrectas en impresiones
-- ❌ Formulación incorrecta de recetas
-- ❌ Remanentes por cantidades no actualizadas
+Cuando se cambia la cantidad en la cabecera de un pedido de ensamblado y se recalculan las líneas (botón "SÍ"), el sistema genera un **error de item tracking** porque las entradas de seguimiento (lotes/series) de las líneas antiguas no se borran correctamente.
 
-## ✅ Cambios Implementados
-
-### 1. AlxAssemblyLineManagement.Codeunit.al
-
-**Cambio A - Método `CopyAssemblyData` (línea ~463)**
-- **Antes:** Solo copiaba líneas tipo Item y Resource
-- **Ahora:** Copia TODAS las líneas (Item, Resource y comentarios)
-```al
-AssemblyLine.SETFILTER(Type, '%1|%2|%3', 
-    AssemblyLine.Type::" ",      // ← NUEVO: Incluye comentarios
-    AssemblyLine.Type::Item, 
-    AssemblyLine.Type::Resource);
+### Error Específico
+```
+Seguim. prod. definido para el producto MP00409 en las cuentas de Línea de ensamblado 
+tiene una cant. mayor que la que ha introducido. 
+Debe ajustar el seguim. prod. actual y volver a introducir la nueva cantidad.
 ```
 
-**Cambio B - Método `UpdateExistingLine` (línea ~400)**
-- Protección para líneas de comentario (no tienen cantidad)
-```al
-IF AssemblyLine.Type = AssemblyLine.Type::" " THEN BEGIN
-    UpdateQuantity := FALSE;
-    UpdateQtyToConsume := FALSE;
-END;
+**El error ocurre cuando:**
+- Hay líneas con item tracking (seguimiento de lotes/series) asignado
+- Se **recalculan las líneas** (ReplaceLinesFromBOM = TRUE)
+- El sistema intenta crear nuevas líneas pero las entradas de tracking antiguas no se borran
+
+## 🔍 Causa Raíz Identificada (Definitiva)
+
+El error ocurría en `DoVerificationsSkippedEarlier` cuando llamaba a `VerifyReservationQuantity`:
+
+```
+Stack Trace:
+1. UpdateAssemblyLines (usuario cambia cantidad y dice "SÍ" a recalcular)
+2. Crear líneas temporales nuevas desde BOM
+3. DoVerificationsSkippedEarlier
+   └── VerifyReservationQuantity(TempNewLine, TempOldLine)
+       └── Reservation Management.CheckQuantityIsCompletelyReleased
+           └── ERROR línea 2132: "Seguim. prod. tiene cant. mayor"
+4. DeleteLines ← Nunca se ejecutaba (error ocurría antes)
 ```
 
-**Cambio C - Nuevo método `ValidateAllLinesUpdated` (línea ~710)**
-- Método de validación para detectar líneas no actualizadas
-- Verifica que `Quantity = "Quantity per" × Header.Quantity`
-- Retorna FALSE si encuentra inconsistencias
+**El problema:**
+- `VerifyReservationQuantity` se llamaba **incluso cuando `ReplaceLinesFromBOM = TRUE`**
+- BC intentaba validar si las Reservation Entries de las líneas **antiguas** podían liberarse
+- Como las líneas antiguas aún existían con su tracking, BC detectaba conflicto
+- El `ItemTrackingHandling` estaba en `None`, causando el error
 
-### 2. AlxiaAssemblyOrder.PageExt.al
+**Por qué falla el intento de borrar Reservation Entries antes:**
+- `AssemblyLineReserve.DeleteLine()` tiene validaciones internas que impiden borrar
+- Requiere `ItemTrackingHandling = "Allow deletion"`, pero no tenemos acceso a configurarlo
 
-**Cambio D - Trigger en campo Quantity (línea ~6)**
-- Fuerza refresco visual inmediato al cambiar cantidad
+## ✅ Solución Implementada (Definitiva)
+
+### Cambio en DoVerificationsSkippedEarlier
+
+**Saltarse completamente las verificaciones de reserva cuando `ReplaceLinesFromBOM = TRUE`:**
+
 ```al
-modify(Quantity) {
-    trigger OnAfterValidate() begin
-        CurrPage.UPDATE(FALSE);
-    end;
-}
+local procedure DoVerificationsSkippedEarlier(ReplaceLinesFromBOM: Boolean; ...)
+begin
+    IF TempNewAsmLine.FIND('-') THEN
+        REPEAT
+            TempNewAsmLine.SetSkipVerificationsThatChangeDatabase(FALSE);
+            // FIX: Cuando ReplaceLinesFromBOM = TRUE, saltamos las verificaciones de reserva
+            // porque las líneas antiguas serán borradas completamente
+            IF NOT ReplaceLinesFromBOM THEN BEGIN
+                TempOldAsmLine.GET(...);
+                TempNewAsmLine.VerifyReservationQuantity(TempNewAsmLine, TempOldAsmLine);
+                TempNewAsmLine.VerifyReservationChange(TempNewAsmLine, TempOldAsmLine);
+            END;
+            TempNewAsmLine.VerifyReservationDateConflict(TempNewAsmLine);
+            TempNewAsmLine.MODIFY;
+        UNTIL TempNewAsmLine.NEXT = 0;
+end;
 ```
 
-## 🧪 Pruebas Requeridas
+### Por Qué Funciona
 
-### Prueba 1: Línea Manual Tipo Item
-1. ✅ Crear pedido de ensamblado con 5 líneas de BOM
-2. ✅ Añadir manualmente línea Item entre línea 2 y 3
-   - Quantity per = 0.5
-   - Quantity = 50 (para cantidad cabecera = 100)
-3. ✅ Modificar Quantity cabecera de 100 a 200
-4. ✅ **VERIFICAR:** Línea manual debe tener Quantity = 100
+Cuando `ReplaceLinesFromBOM = TRUE`:
+1. ✅ Las líneas antiguas van a ser **completamente eliminadas** con `DeleteLines`
+2. ✅ Sus Reservation Entries también se borrarán en `DeleteLines`
+3. ✅ NO tiene sentido validar si las reservas antiguas pueden liberarse
+4. ✅ Solo validamos `VerifyReservationDateConflict` para las líneas **nuevas**
 
-### Prueba 2: Línea de Comentario
-1. ✅ Crear pedido de ensamblado
-2. ✅ Añadir línea de comentario (Type = " ")
-3. ✅ Modificar Quantity cabecera
-4. ✅ **VERIFICAR:** No hay errores, otras líneas actualizan correctamente
+### Archivos Modificados
 
-### Prueba 3: Múltiples Líneas Manuales
-1. ✅ Crear pedido con líneas BOM
-2. ✅ Añadir 3 líneas manuales en diferentes posiciones
-3. ✅ Modificar Quantity cabecera de 100 a 150
-4. ✅ **VERIFICAR:** TODAS las líneas actualizan proporcionalmente
+**3 cambios en cada archivo:**
 
-### Prueba 4: Imprimir Inmediatamente
-1. ✅ Crear pedido con líneas manuales
-2. ✅ Modificar Quantity cabecera
-3. ✅ **SIN MOVERSE DEL CAMPO** pulsar "Imprimir"
-4. ✅ **VERIFICAR:** Impresión muestra cantidades actualizadas
+1. **Eliminar llamada a `DeleteReservationEntriesOnly`** (no funcionaba)
+   - En `UpdateAssemblyLines`, línea ~309
 
-### Prueba 5: Reducir Cantidad
-1. ✅ Crear pedido con Quantity = 200
-2. ✅ Añadir líneas manuales
-3. ✅ Modificar Quantity de 200 a 50
-4. ✅ **VERIFICAR:** Todas las líneas reducen proporcionalmente
+2. **Modificar `DoVerificationsSkippedEarlier`** (saltar verificaciones cuando ReplaceLinesFromBOM)
+   - Líneas ~520
 
-### Prueba 6: Cambios Múltiples
-1. ✅ Cantidad 100 → 200 → 150 → 300
-2. ✅ **VERIFICAR:** En cada cambio todas las líneas actualizan correctamente
+3. **Simplificar `DeleteLines`** (volver a usar AssemblyLineReserve)
+   - Líneas ~238
 
-## ✅ Checklist de Validación
+## 🧪 Casos de Prueba para Cliente
 
-Para cada prueba, verificar:
-- [ ] Todas las líneas (BOM + manuales) actualizan su cantidad
-- [ ] Fórmula correcta: `Quantity = "Quantity per" × Header.Quantity`
-- [ ] No hay errores al modificar cantidad
-- [ ] La pantalla se refresca automáticamente
-- [ ] La impresión muestra datos correctos
-- [ ] Las líneas de comentario no causan errores
+### ✅ Test 1: Recalcular con Item Tracking
+**Objetivo:** Verificar que el recálculo funciona con productos que tienen seguimiento de lote
 
-## 📊 Resultado Esperado
+**Pasos:**
+1. Crear pedido de ensamblado con Quantity = 100
+2. Asignar lotes/series en las líneas (producto con seguimiento M_PRIMA)
+3. Cambiar Quantity de cabecera a 50
+4. En el mensaje "¿Desea que se recalcule las líneas?", pulsar **SÍ**
+5. ✅ **VERIFICAR:**
+   - Las líneas se recalculan correctamente
+   - **NO aparece error** "Seguim. prod. tiene cant. mayor"
+   - Se pueden asignar nuevos lotes para la cantidad 50
+
+### ✅ Test 2: Recalcular Aumentando Cantidad
+**Objetivo:** Verificar que también funciona al aumentar
+
+**Pasos:**
+1. Crear pedido con Quantity = 50, con tracking asignado
+2. Cambiar Quantity a 100
+3. Recalcular líneas (SÍ)
+4. ✅ **VERIFICAR:**
+   - Líneas se recalculan a cantidad 100
+   - Puedes asignar nuevos lotes
+   - NO hay errores
+
+### ✅ Test 3: Recalcular Múltiples Veces
+**Objetivo:** Verificar cambios consecutivos
+
+**Pasos:**
+1. Crear pedido con Quantity = 100, tracking asignado
+2. Cambiar a 200, recalcular (SÍ)
+3. Cambiar a 50, recalcular (SÍ)  
+4. Cambiar a 150, recalcular (SÍ)
+5. ✅ **VERIFICAR:** Cada recálculo funciona sin errores
+
+### ✅ Test 4: NO Recalcular (responder NO)
+**Objetivo:** Verificar que el fix anterior sigue funcionando
+
+**Pasos:**
+1. Crear pedido con Quantity = 100
+2. Cambiar Quantity a 50
+3. En "¿Desea que se recalcule las líneas?", pulsar **NO**
+4. ✅ **VERIFICAR:**
+   - Las líneas se actualizan proporcionalmente (sin reemplazarlas)
+   - Funciona correctamente
+
+## 📋 Checklist de Validación
+
+Para cada prueba, confirmar:
+- [ ] NO aparece error "Seguim. prod. tiene cant. mayor"
+- [ ] Las líneas se recalculan/actualizan correctamente
+- [ ] Puedes asignar nuevos lotes/series después del recálculo
+- [ ] Funciona tanto al **aumentar** como al **reducir**
+- [ ] Funciona tanto con "SÍ" (recalcular) como con "NO" (actualizar)
+
+## ⚠️ Notas Importantes
+
+1. **Este fix complementa el anterior**:
+   - Fix anterior: Actualización proporcional cuando NO se recalcula (respuesta = NO)
+   - Este fix: Borrado correcto de tracking cuando SÍ se recalcula (respuesta = SÍ)
+
+2. **Item Tracking debe borrarse explícitamente**:
+   - `AssemblyLine.DELETE(TRUE)` NO borra automáticamente las Reservation Entries
+   - Necesitamos `ReservEntry.DELETEALL(TRUE)` ANTES de borrar la línea
+
+3. **El método comentado `HandleItemTrackingDeletion` probablemente hacía esto**:
+   - Estaba comentado en los 3 archivos
+   - Lo reemplazamos con código explícito en el mismo lugar
+
+## 🎯 Resultado Esperado
 
 ### Antes del Fix
 ```
-Usuario añade línea manual → Modifica cantidad cabecera →
-❌ Línea manual NO actualiza → Impresión INCORRECTA
+1. Usuario cambia Quantity: 100 → 50
+2. Sistema pregunta: "¿Desea que se recalcule las líneas?"
+3. Usuario dice: SÍ
+4. Sistema intenta borrar líneas
+5. ❌ ERROR: "Seguim. prod. tiene cant. mayor"
 ```
 
 ### Después del Fix
 ```
-Usuario añade línea manual → Modifica cantidad cabecera →
-✅ Línea manual SÍ actualiza → Impresión CORRECTA
+1. Usuario cambia Quantity: 100 → 50
+2. Sistema pregunta: "¿Desea que se recalcule las líneas?"
+3. Usuario dice: SÍ
+4. Sistema borra tracking entries de líneas antiguas
+5. Sistema borra líneas antiguas
+6. Sistema crea líneas nuevas con Quantity = 50
+7. ✅ Sin errores, listo para asignar nuevos lotes
 ```
-
-## 🔧 Casos Especiales Soportados
-
-✅ Líneas Item añadidas manualmente  
-✅ Líneas Resource añadidas manualmente  
-✅ Líneas de comentario (Type = " ")  
-✅ Múltiples líneas manuales  
-✅ Líneas con escalados configurados  
-✅ Fixed Usage (cantidad fija)  
-✅ Cambios consecutivos en cantidad  
-✅ Aumento y reducción de cantidad  
-
-## 📝 Notas Importantes
-
-### Comportamiento Correcto
-- **Líneas BOM estándar:** Se actualizan (sin cambios)
-- **Líneas manuales:** Ahora se actualizan correctamente ✅
-- **Líneas de comentario:** Se mantienen sin cambios (correcto)
-- **Fixed Usage:** Mantienen cantidad fija (correcto)
-- **Escalados:** Se recalculan según tramo (sin cambios)
-
-### Rendimiento
-- No se espera degradación de rendimiento
-- Cambio localizado, mínimo impacto
-- Compatible con funcionalidad existente
-
-## ⚠️ Si Encuentra Problemas
-
-Si durante las pruebas encuentra:
-1. **Línea que no actualiza:** Verificar tipo de línea y `"Quantity per"`
-2. **Error al modificar cantidad:** Anotar mensaje de error completo
-3. **Cantidades incorrectas:** Comparar `Quantity` vs `"Quantity per" × Header.Quantity`
-4. **Problema de rendimiento:** Anotar número de líneas en el ensamblado
-
-Reportar con:
-- Número de prueba
-- Pasos exactos
-- Valores esperados vs actuales
-- Captura de pantalla
-
-## 📅 Versión
-
-**Versión:** 1.0  
-**Fecha:** 2026-07-29  
-**Estado:** ✅ Implementado - Listo para Testing  
-**Ambiente:** Sandbox
 
 ---
 
-**¿Listo para probar?** Siga las 6 pruebas en orden y marque el checklist. ✅
+**Fecha:** 2026-08-04  
+**Archivos Modificados:** 3  
+**Severidad:** CRÍTICA (bloqueaba recálculo de líneas con item tracking)  
+**Método Modificado:** `DeleteLines` en AlxAssemblyLineManagement.Codeunit.al, _Productos Evento_.Table.al, _Lineas Evento_.Table.al

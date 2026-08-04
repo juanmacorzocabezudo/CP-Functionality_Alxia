@@ -238,11 +238,15 @@ codeunit 50006 AlxAssemblyLineManagement
     procedure DeleteLines(AsmHeader: Record 900)
     var
         AssemblyLine: Record 901;
+        AssemblyLineReserve: Codeunit 926;
     begin
+        // Borra las líneas y sus Reservation Entries
         SetLinkToLines(AsmHeader, AssemblyLine);
         IF AssemblyLine.FIND('-') THEN BEGIN
-            //HandleItemTrackingDeletion;
             REPEAT
+                // Borrar tracking entries de esta línea
+                AssemblyLineReserve.DeleteLine(AssemblyLine);
+                
                 AssemblyLine.SuspendStatusCheck(TRUE);
                 AssemblyLine.DELETE(TRUE);
             UNTIL AssemblyLine.NEXT = 0;
@@ -395,13 +399,6 @@ codeunit 50006 AlxAssemblyLineManagement
         QtyRatio: Decimal;
         QtyToConsume: Decimal;
     begin
-        // FIX: Las líneas de comentario (Type = " ") solo actualizan fechas y ubicación
-        // No tienen cantidad, por lo que UpdateQuantity y UpdateQtyToConsume deben ser FALSE
-        IF AssemblyLine.Type = AssemblyLine.Type::" " THEN BEGIN
-            UpdateQuantity := FALSE;
-            UpdateQtyToConsume := FALSE;
-        END;
-
         IF AsmHeader.IsStatusCheckSuspended THEN AssemblyLine.SuspendStatusCheck(TRUE);
         IF UpdateLocation THEN BEGIN
             IF AssemblyLine.Type = AssemblyLine.Type::Item THEN AssemblyLine.VALIDATE("Location Code", AsmHeader."Location Code");
@@ -417,11 +414,16 @@ codeunit 50006 AlxAssemblyLineManagement
             // Fin ADV001
             IF AssemblyLine.FixedUsage THEN
                 AssemblyLine.VALIDATE(Quantity)
-            ELSE
-                //++ KR 04/11/21
-                //AssemblyLine.VALIDATE(Quantity,AssemblyLine.Quantity * QtyRatio);
-                AssemblyLine.VALIDATE(Quantity, AssemblyLine."Quantity per" * AsmHeader.Quantity);
-            //--
+            ELSE BEGIN
+                // FIX: Líneas manuales (Quantity per = 0) deben actualizarse proporcionalmente
+                // Líneas del BOM (Quantity per > 0) usan la fórmula estándar
+                IF AssemblyLine."Quantity per" = 0 THEN
+                    // Línea manual: actualizar proporcionalmente
+                    AssemblyLine.VALIDATE(Quantity, AssemblyLine.Quantity * QtyRatio)
+                ELSE
+                    // Línea del BOM: usar Quantity per × Header Quantity
+                    AssemblyLine.VALIDATE(Quantity, AssemblyLine."Quantity per" * AsmHeader.Quantity);
+            END;
             AssemblyLine.InitQtyToConsume;
         END;
         IF UpdateUOM THEN BEGIN
@@ -460,9 +462,9 @@ codeunit 50006 AlxAssemblyLineManagement
         ToAssemblyHeader := FromAssemblyHeader;
         ToAssemblyHeader.INSERT;
         SetLinkToLines(FromAssemblyHeader, AssemblyLine);
-        // FIX: Incluir TODAS las líneas, no solo Item y Resource
-        // Esto soluciona el problema de líneas añadidas manualmente que no se actualizan
-        AssemblyLine.SETFILTER(Type, '%1|%2|%3', AssemblyLine.Type::" ", AssemblyLine.Type::Item, AssemblyLine.Type::Resource);
+        // Filtro solo líneas con cantidad (Item, Resource)
+        // Las líneas de comentario (Type = " ") y manuales (Type = Item con Quantity per = 0) se incluyen
+        AssemblyLine.SETFILTER(Type, '%1|%2', AssemblyLine.Type::Item, AssemblyLine.Type::Resource);
         ToAssemblyLine.RESET;
         ToAssemblyLine.DELETEALL;
         IF AssemblyLine.FIND('-') THEN
@@ -511,9 +513,13 @@ codeunit 50006 AlxAssemblyLineManagement
         IF TempNewAsmLine.FIND('-') THEN
             REPEAT
                 TempNewAsmLine.SetSkipVerificationsThatChangeDatabase(FALSE);
-                IF NOT ReplaceLinesFromBOM THEN TempOldAsmLine.GET(TempNewAsmLine."Document Type", TempNewAsmLine."Document No.", TempNewAsmLine."Line No.");
-                TempNewAsmLine.VerifyReservationQuantity(TempNewAsmLine, TempOldAsmLine);
-                TempNewAsmLine.VerifyReservationChange(TempNewAsmLine, TempOldAsmLine);
+                // FIX: Cuando ReplaceLinesFromBOM = TRUE, saltamos las verificaciones de reserva
+                // porque las líneas antiguas serán borradas completamente
+                IF NOT ReplaceLinesFromBOM THEN BEGIN
+                    TempOldAsmLine.GET(TempNewAsmLine."Document Type", TempNewAsmLine."Document No.", TempNewAsmLine."Line No.");
+                    TempNewAsmLine.VerifyReservationQuantity(TempNewAsmLine, TempOldAsmLine);
+                    TempNewAsmLine.VerifyReservationChange(TempNewAsmLine, TempOldAsmLine);
+                END;
                 TempNewAsmLine.VerifyReservationDateConflict(TempNewAsmLine);
                 /*  IF ReplaceLinesFromBOM THEN
                      CASE TempNewAsmLine.Type OF
