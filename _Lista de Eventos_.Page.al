@@ -202,13 +202,15 @@ page 50004 "Lista de Eventos"
                 begin
                     rRecEvento.Reset();
                     rRecEvento.SetRange("Codigo Evento", Rec."Codigo Evento");
-                    rRecEvento.SetRange("Codigo Recurso", 'REC00005');
+                    //JMC 17/08/26 Evitamos filtrar por código recurso
+                    //rRecEvento.SetRange("Codigo Recurso", 'REC00005');
                     //rRecEvento.SetRange("Codigo Evento", Rec."Codigo Evento");
                     //rRecEvento.SetRange(Tipo, rRecEvento.Tipo::Personal);
                     if rRecEvento.FindFirst() then begin
                         rAsigEvento.Reset();
                         rAsigEvento.SetRange("Codigo Evento", Rec."Codigo Evento");
-                        rAsigEvento.SetRange("Linea Recurso Evento", rRecEvento.Linea);
+                        //JMC 17/08/26 Evitamos filtrar por Linea
+                        //rAsigEvento.SetRange("Linea Recurso Evento", rRecEvento.Linea);
                         pAsigRec.SetTableView(rAsigEvento);
                         pAsigRec.Run();
                         /*       
