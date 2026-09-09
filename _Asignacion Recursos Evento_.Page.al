@@ -48,4 +48,15 @@ page 50013 "Asignacion Recursos Evento"
     actions
     {
     }
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    var
+        AsigRecursosEvento: Record "Asignacion Recursos Eventos";
+    begin
+        AsigRecursosEvento.SetRange("Codigo Evento", Rec."Codigo Evento");
+        if AsigRecursosEvento.FindLast() then
+            Rec."Linea Recurso Evento" := AsigRecursosEvento."Linea Recurso Evento" + 10000
+        else
+            Rec."Linea Recurso Evento" := 10000;
+    end;
 }
