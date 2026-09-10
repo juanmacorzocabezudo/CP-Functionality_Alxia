@@ -5,7 +5,7 @@ page 50010 "Personal Eventos"
     //DelayedInsert = true;
     PageType = List;
     SourceTable = "Recursos Evento";
-    SourceTableView = SORTING("Codigo Evento", Tipo, Linea)ORDER(Ascending)WHERE(Tipo=CONST(Personal));
+    SourceTableView = SORTING("Codigo Evento", Tipo, Linea) ORDER(Ascending) WHERE(Tipo = CONST(Personal));
 
     layout
     {
@@ -102,7 +102,7 @@ page 50010 "Personal Eventos"
                 PromotedCategory = "Report";
                 PromotedIsBig = true;
                 RunObject = Page 50013;
-                RunPageLink = "Codigo Evento"=FIELD("Codigo Evento"), "Linea Recurso Evento"=FIELD(Linea);
+                RunPageLink = "Codigo Evento" = FIELD("Codigo Evento");
             }
         }
     }
@@ -112,7 +112,7 @@ page 50010 "Personal Eventos"
     begin
         IF Rec."Codigo Evento" <> '' THEN BEGIN
             ltEvento.GET(Rec."Codigo Evento");
-            IF ltEvento.Estado = ltEvento.Estado::Realizado THEN CurrPage.EDITABLE:=FALSE;
+            IF ltEvento.Estado = ltEvento.Estado::Realizado THEN CurrPage.EDITABLE := FALSE;
         END;
     end;
 }

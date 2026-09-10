@@ -813,6 +813,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table Asignacion Recursos Eventos - Field Linea Recurso Evento - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 788205136 - Field 821855542 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Orden</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table Asignacion Recursos Eventos - Field Orden - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 788205136 - Field 199135226 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Tarea Realizada</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -5922,6 +5927,11 @@
           <source>Nº Producto</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AlxWsPedidoEnsamblado - Control Nº Producto - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1683515353 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Asignación Recursos Evento</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Asignacion Recursos Evento - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 4122787154 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>LM. Adicional Coste</source>

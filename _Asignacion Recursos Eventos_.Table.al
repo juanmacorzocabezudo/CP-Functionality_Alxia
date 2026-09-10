@@ -10,12 +10,12 @@ table 50005 "Asignacion Recursos Eventos"
             trigger OnValidate()
             begin
                 gt_evento.GET("Codigo Evento");
-            //"Hora Evento" := gt_evento."Hora Evento";
+                //"Hora Evento" := gt_evento."Hora Evento";
             end;
         }
         field(2; "Linea Recurso Evento"; Integer)
         {
-            TableRelation = "Recursos Evento".Linea WHERE("Codigo Evento"=FIELD("Codigo Evento"));
+            TableRelation = "Recursos Evento".Linea WHERE("Codigo Evento" = FIELD("Codigo Evento"));
         }
         field(3; "Codigo Recurso"; Code[20])
         {
@@ -25,15 +25,14 @@ table 50005 "Asignacion Recursos Eventos"
             begin
                 IF "Codigo Recurso" <> '' THEN BEGIN
                     gt_recurso.GET("Codigo Recurso");
-                    "Unidad de Medida":=gt_recurso."Base Unit of Measure";
-                    "Coste Unitario":=gt_recurso."Unit Cost";
-                    Descripcion:=gt_recurso.Name;
+                    "Unidad de Medida" := gt_recurso."Base Unit of Measure";
+                    "Coste Unitario" := gt_recurso."Unit Cost";
+                    Descripcion := gt_recurso.Name;
                 END
-                ELSE
-                BEGIN
-                    Descripcion:='';
-                    "Unidad de Medida":='';
-                    "Coste Unitario":=0;
+                ELSE BEGIN
+                    Descripcion := '';
+                    "Unidad de Medida" := '';
+                    "Coste Unitario" := 0;
                 END;
             end;
         }
@@ -65,6 +64,10 @@ table 50005 "Asignacion Recursos Eventos"
             Caption = 'Descripción';
             Editable = false;
         }
+        field(11; Orden; Integer)
+        {
+            Caption = 'Orden';
+        }
     }
     keys
     {
@@ -72,10 +75,14 @@ table 50005 "Asignacion Recursos Eventos"
         {
             Clustered = true;
         }
+        key(Key2; "Codigo Evento", Orden)
+        {
+        }
     }
     fieldgroups
     {
     }
-    var gt_evento: Record Evento;
-    gt_recurso: Record Resource;
+    var
+        gt_evento: Record Evento;
+        gt_recurso: Record Resource;
 }

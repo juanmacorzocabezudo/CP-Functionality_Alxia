@@ -5,7 +5,7 @@ page 50035 PersonalEventoListPart
     Caption = 'Personal Eventos';
     //DelayedInsert = true;
     SourceTable = "Recursos Evento";
-    SourceTableView = SORTING("Codigo Evento", Tipo, Linea)ORDER(Ascending)WHERE(Tipo=CONST(Personal));
+    SourceTableView = SORTING("Codigo Evento", Tipo, Linea) ORDER(Ascending) WHERE(Tipo = CONST(Personal));
 
     layout
     {
@@ -112,7 +112,7 @@ page 50035 PersonalEventoListPart
                 ApplicationArea = All;
                 Image = ResourceRegisters;
                 RunObject = Page 50013;
-                RunPageLink = "Codigo Evento"=FIELD("Codigo Evento"), "Linea Recurso Evento"=FIELD(Linea);
+                RunPageLink = "Codigo Evento" = FIELD("Codigo Evento");
             }
         }
     }
@@ -122,7 +122,7 @@ page 50035 PersonalEventoListPart
     begin
         IF Rec."Codigo Evento" <> '' THEN BEGIN
             ltEvento.GET(Rec."Codigo Evento");
-            IF ltEvento.Estado = ltEvento.Estado::Realizado THEN CurrPage.EDITABLE:=FALSE;
+            IF ltEvento.Estado = ltEvento.Estado::Realizado THEN CurrPage.EDITABLE := FALSE;
         END;
     end;
 }

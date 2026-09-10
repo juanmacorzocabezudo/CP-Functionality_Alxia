@@ -1,7 +1,10 @@
 page 50013 "Asignacion Recursos Evento"
 {
+    Caption = 'Asignación Recursos Evento';
+    DelayedInsert = true;
     PageType = List;
     SourceTable = "Asignacion Recursos Eventos";
+    SourceTableView = SORTING("Codigo Evento", Orden) ORDER(Ascending);
 
     layout
     {
@@ -9,6 +12,10 @@ page 50013 "Asignacion Recursos Evento"
         {
             repeater(Group)
             {
+                field(Orden; Rec.Orden)
+                {
+                    ApplicationArea = All;
+                }
                 field("Linea Recurso Evento"; Rec."Linea Recurso Evento")
                 {
                     ApplicationArea = All;
@@ -53,10 +60,11 @@ page 50013 "Asignacion Recursos Evento"
     var
         AsigRecursosEvento: Record "Asignacion Recursos Eventos";
     begin
+        AsigRecursosEvento.SetCurrentKey("Codigo Evento", Orden);
         AsigRecursosEvento.SetRange("Codigo Evento", Rec."Codigo Evento");
         if AsigRecursosEvento.FindLast() then
-            Rec."Linea Recurso Evento" := AsigRecursosEvento."Linea Recurso Evento" + 10000
+            Rec.Orden := AsigRecursosEvento.Orden + 1
         else
-            Rec."Linea Recurso Evento" := 10000;
+            Rec.Orden := 1;
     end;
 }
