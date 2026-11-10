@@ -994,6 +994,7 @@ table 50016 "Productos Evento"
     var
         DueDateBeforeWorkDateMsgShown: Boolean;
         SkipVerificationsThatChangeDatabase: Boolean;
+        AssemblyLineMgt: Codeunit AlxAssemblyLineManagement;
     begin
         SkipVerificationsThatChangeDatabase:=AsmLineRecordIsTemporary;
         AssemblyLine.SetSkipVerificationsThatChangeDatabase(SkipVerificationsThatChangeDatabase);
@@ -1010,8 +1011,7 @@ table 50016 "Productos Evento"
             END;
         AssemblyLine.VALIDATE("Unit of Measure Code", BomComponent."Unit of Measure Code");
         IF AssemblyLine.Type <> AssemblyLine.Type::" " THEN AssemblyLine.VALIDATE("Quantity per", AssemblyLine.CalcQuantityFromBOM(BomComponent.Type, BomComponent."Quantity per", 1, AsmHeader."Qty. per Unit of Measure", AssemblyLine."Resource Usage Type"));
-        AssemblyLine.VALIDATE(Quantity, AssemblyLine.CalcQuantityFromBOM(BomComponent.Type, BomComponent."Quantity per", AsmHeader.Quantity, AsmHeader."Qty. per Unit of Measure", AssemblyLine."Resource Usage Type"));
-        AssemblyLine.VALIDATE("Quantity to Consume", AssemblyLine.CalcQuantityFromBOM(BomComponent.Type, BomComponent."Quantity per", AsmHeader."Quantity to Assemble", AsmHeader."Qty. per Unit of Measure", AssemblyLine."Resource Usage Type"));
+        AssemblyLineMgt.UpdateAssemblyLineQuantities(AsmHeader, AssemblyLine, TRUE, TRUE);
         AssemblyLine.ValidateDueDate(AsmHeader, AsmHeader."Starting Date", ShowDueDateBeforeWorkDateMessage);
         DueDateBeforeWorkDateMsgShown:=(AssemblyLine."Due Date" < WORKDATE) AND ShowDueDateBeforeWorkDateMessage;
         AssemblyLine.ValidateLeadTimeOffset(AsmHeader, BomComponent."Lead-Time Offset", NOT DueDateBeforeWorkDateMsgShown AND ShowDueDateBeforeWorkDateMessage);

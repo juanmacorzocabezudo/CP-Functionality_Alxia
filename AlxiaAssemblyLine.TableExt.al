@@ -166,8 +166,15 @@ tableextension 50019 AlxiaAssemblyLine extends "Assembly Line"
         }
         modify("Quantity per")
         {
+        trigger OnBeforeValidate()
+        begin
+            IF gb_FijarCantidadCabecera AND (gd_CantidadCabecera <> 0) THEN
+                QuantityPerBeforeValidation:="Quantity per";
+        end;
         trigger OnAfterValidate()
         begin
+            IF gb_FijarCantidadCabecera AND (gd_CantidadCabecera <> 0) THEN
+                "Quantity per":=QuantityPerBeforeValidation;
             //++ KR
             // Inicio ADV001
             gfu_CalcularEscalado;
@@ -359,6 +366,7 @@ tableextension 50019 AlxiaAssemblyLine extends "Assembly Line"
     GLSetup: Record 98;
     gt_Escalados: Record 50017;
     gd_CantidadCabecera: Decimal;
+    QuantityPerBeforeValidation: Decimal;
     gd_CantidadBaseCabecera: Decimal;
     gd_CantidadPendienteCabecera: Decimal;
     gd_CantidadPendienteBaseCabecera: Decimal;
@@ -621,7 +629,8 @@ tableextension 50019 AlxiaAssemblyLine extends "Assembly Line"
                             Quantity:=gt_Escalados.CantidadLoteReceta;
                             CantidadEscalado:=li_CantTramoAnterior END;
                 END;
-                "Quantity per":=Quantity / gd_CantidadEnsamblarCabecera;
+                IF gd_CantidadEnsamblarCabecera <> 0 THEN
+                    "Quantity per":=Quantity / gd_CantidadEnsamblarCabecera;
             UNTIL(gt_Escalados.NEXT = 0) OR lb_SalirRepeat;
         IF(lb_ExisteEscalado) AND (NOT lb_ExisteEscaladoSuperior)THEN ERROR(ERROR001, "No.", gd_CantidadEnsamblarCabecera);
     // Fin ADV001

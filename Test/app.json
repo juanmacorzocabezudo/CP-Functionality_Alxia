@@ -1,0 +1,26 @@
+{
+  "id": "799e16ae-5b4b-471b-9276-b864f0b6d347",
+  "name": "CP Event Line Tests",
+  "publisher": "Alxia Consultoria e innovación",
+  "version": "1.26.2.13",
+  "application": "27.0.0.0",
+  "platform": "27.0.0.0",
+  "runtime": "14.0",
+  "target": "Cloud",
+  "idRanges": [{ "from": 80000, "to": 80009 }],
+  "preprocessorSymbols": ["CP_EVENT_TESTS"],
+  "dependencies": [
+    {
+      "id": "dd0be2ea-f733-4d65-bb34-a28f4624fb14",
+      "name": "Library Assert",
+      "publisher": "Microsoft",
+      "version": "27.0.0.0"
+    },
+    {
+      "id": "5d86850b-0d76-4eca-bd7b-951ad998e997",
+      "name": "Tests-TestLibraries",
+      "publisher": "Microsoft",
+      "version": "27.0.0.0"
+    }
+  ]
+}

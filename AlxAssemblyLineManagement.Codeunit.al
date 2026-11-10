@@ -95,8 +95,7 @@ codeunit 50006 AlxAssemblyLineManagement
             END;
         AssemblyLine.VALIDATE("Unit of Measure Code", BomComponent."Unit of Measure Code");
         IF AssemblyLine.Type <> AssemblyLine.Type::" " THEN AssemblyLine.VALIDATE("Quantity per", AssemblyLine.CalcQuantityFromBOM(BomComponent.Type.AsInteger(), BomComponent."Quantity per", 1, AsmHeader."Qty. per Unit of Measure", AssemblyLine."Resource Usage Type"));
-        AssemblyLine.VALIDATE(Quantity, AssemblyLine.CalcQuantityFromBOM(BomComponent.Type.AsInteger(), BomComponent."Quantity per", AsmHeader.Quantity, AsmHeader."Qty. per Unit of Measure", AssemblyLine."Resource Usage Type"));
-        AssemblyLine.VALIDATE("Quantity to Consume", AssemblyLine.CalcQuantityFromBOM(BomComponent.Type.AsInteger(), BomComponent."Quantity per", AsmHeader."Quantity to Assemble", AsmHeader."Qty. per Unit of Measure", AssemblyLine."Resource Usage Type"));
+        UpdateAssemblyLineQuantities(AsmHeader, AssemblyLine, TRUE, TRUE);
         AssemblyLine.ValidateDueDate(AsmHeader, AsmHeader."Starting Date", ShowDueDateBeforeWorkDateMessage);
         DueDateBeforeWorkDateMsgShown:=(AssemblyLine."Due Date" < WORKDATE) AND ShowDueDateBeforeWorkDateMessage;
         AssemblyLine.ValidateLeadTimeOffset(AsmHeader, BomComponent."Lead-Time Offset", NOT DueDateBeforeWorkDateMsgShown AND ShowDueDateBeforeWorkDateMessage);
@@ -358,17 +357,10 @@ codeunit 50006 AlxAssemblyLineManagement
             AssemblyLine.ValidateLeadTimeOffset(AsmHeader, AssemblyLine."Lead-Time Offset", FALSE);
         END;
         IF UpdateQuantity THEN BEGIN
-            QtyRatio:=AsmHeader.Quantity / OldAsmHeader.Quantity;
             // Inicio ADV001
             AssemblyLine.gfu_SetCantidadCabecera(AsmHeader.Quantity, AsmHeader."Quantity (Base)", AsmHeader."Remaining Quantity", AsmHeader."Remaining Quantity (Base)", AsmHeader."Quantity to Assemble", AsmHeader."Quantity to Assemble (Base)", TRUE);
             // Fin ADV001
-            IF AssemblyLine.FixedUsage THEN AssemblyLine.VALIDATE(Quantity)
-            ELSE
-                //++ KR 04/11/21
-                //AssemblyLine.VALIDATE(Quantity,AssemblyLine.Quantity * QtyRatio);
-                AssemblyLine.VALIDATE(Quantity, AssemblyLine."Quantity per" * AsmHeader.Quantity);
-            //--
-            AssemblyLine.InitQtyToConsume;
+            UpdateAssemblyLineQuantities(AsmHeader, AssemblyLine, TRUE, FALSE);
         END;
         IF UpdateUOM THEN BEGIN
             QtyRatio:=AsmHeader."Qty. per Unit of Measure" / OldAsmHeader."Qty. per Unit of Measure";
@@ -377,20 +369,35 @@ codeunit 50006 AlxAssemblyLineManagement
                 AssemblyLine.VALIDATE("Quantity per", AssemblyLine."Quantity per" * QtyRatio);
             AssemblyLine.InitQtyToConsume;
         END;
-        IF UpdateQtyToConsume THEN IF NOT AssemblyLine.FixedUsage THEN BEGIN
-                AssemblyLine.InitQtyToConsume;
-                QtyToConsume:=AssemblyLine.Quantity * AsmHeader."Quantity to Assemble" / AsmHeader.Quantity;
-                AsmHeader.RoundQty(QtyToConsume);
-                //SL Error en la cantidad de Remaining
-                AssemblyLine."Remaining Quantity":=AssemblyLine.Quantity - AssemblyLine."Consumed Quantity";
-                AssemblyLine.VALIDATE("Quantity to Consume", QtyToConsume);
-            END;
+        IF UpdateQtyToConsume THEN UpdateAssemblyLineQuantities(AsmHeader, AssemblyLine, FALSE, TRUE);
         IF UpdateDimension THEN AssemblyLine.UpdateDim(AsmHeader."Dimension Set ID", OldAsmHeader."Dimension Set ID");
         AssemblyLine.MODIFY(TRUE);
         // Inicio ADV001
         AssemblyLine.gfu_SetCantidadCabecera(AsmHeader.Quantity, AsmHeader."Quantity (Base)", AsmHeader."Remaining Quantity", AsmHeader."Remaining Quantity (Base)", AsmHeader."Quantity to Assemble", AsmHeader."Quantity to Assemble (Base)", FALSE);
     // Fin ADV001
     end;
+    procedure UpdateAssemblyLineQuantities(AsmHeader: Record 900; var AssemblyLine: Record 901; UpdateQuantity: Boolean; UpdateQtyToConsume: Boolean)
+    var
+        QtyToConsume: Decimal;
+    begin
+        IF UpdateQuantity THEN BEGIN
+            IF AssemblyLine.FixedUsage THEN
+                AssemblyLine.VALIDATE(Quantity)
+            ELSE
+                AssemblyLine.VALIDATE(Quantity, AssemblyLine."Quantity per" * AsmHeader.Quantity);
+            AssemblyLine.InitQtyToConsume;
+        END;
+        IF UpdateQtyToConsume THEN
+            IF NOT AssemblyLine.FixedUsage THEN BEGIN
+                AssemblyLine.InitQtyToConsume;
+                IF AsmHeader.Quantity <> 0 THEN
+                    QtyToConsume := AssemblyLine.Quantity * AsmHeader."Quantity to Assemble" / AsmHeader.Quantity;
+                AsmHeader.RoundQty(QtyToConsume);
+                AssemblyLine."Remaining Quantity" := AssemblyLine.Quantity - AssemblyLine."Consumed Quantity";
+                AssemblyLine.VALIDATE("Quantity to Consume", QtyToConsume);
+            END;
+    end;
+
     procedure ShowDueDateBeforeWorkDateMsg(ActualLineDueDate: Date)
     begin
         IF GUIALLOWED THEN IF GetWarningMode THEN MESSAGE(Text005, ActualLineDueDate, WORKDATE);
@@ -585,8 +592,7 @@ codeunit 50006 AlxAssemblyLineManagement
             END;
         AssemblyLine.VALIDATE("Unit of Measure Code", BomComponent."Unit of Measure Code");
         IF AssemblyLine.Type <> AssemblyLine.Type::" " THEN AssemblyLine.VALIDATE("Quantity per", AssemblyLine.CalcQuantityFromBOM(BomComponent.Type, BomComponent."Quantity per", 1, AsmHeader."Qty. per Unit of Measure", AssemblyLine."Resource Usage Type"));
-        AssemblyLine.VALIDATE(Quantity, AssemblyLine.CalcQuantityFromBOM(BomComponent.Type, BomComponent."Quantity per", AsmHeader.Quantity, AsmHeader."Qty. per Unit of Measure", AssemblyLine."Resource Usage Type"));
-        AssemblyLine.VALIDATE("Quantity to Consume", AssemblyLine.CalcQuantityFromBOM(BomComponent.Type, BomComponent."Quantity per", AsmHeader."Quantity to Assemble", AsmHeader."Qty. per Unit of Measure", AssemblyLine."Resource Usage Type"));
+        UpdateAssemblyLineQuantities(AsmHeader, AssemblyLine, TRUE, TRUE);
         AssemblyLine.ValidateDueDate(AsmHeader, AsmHeader."Starting Date", ShowDueDateBeforeWorkDateMessage);
         DueDateBeforeWorkDateMsgShown:=(AssemblyLine."Due Date" < WORKDATE) AND ShowDueDateBeforeWorkDateMessage;
         AssemblyLine.ValidateLeadTimeOffset(AsmHeader, BomComponent."Lead-Time Offset", NOT DueDateBeforeWorkDateMsgShown AND ShowDueDateBeforeWorkDateMessage);

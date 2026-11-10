@@ -967,7 +967,12 @@ table 50004 Evento
         SELECTLATESTVERSION;
         //--
         if (Estado = Estado::Presupuesto) or (Estado = Estado::Aceptado) or (Estado = Estado::Archivado) then begin
-            IF ("Total Adultos" = 0) AND ("Total Ninos" = 0) THEN ERROR(Text10000);
+            IF ("Total Adultos" = 0) AND ("Total Ninos" = 0) THEN BEGIN
+                lt_LineaEventos.SETRANGE("Codigo Evento", "Codigo Evento");
+                lt_LineaEventos.SETRANGE(Tipo, lt_LineaEventos.Tipo::Niño);
+                lt_LineaEventos.SETFILTER(Cantidad, '<>0');
+                IF lt_LineaEventos.ISEMPTY THEN ERROR(Text10000);
+            END;
             GLSetup.GET;
             //Inicio ADV004
             //ADV004 lfu_CalculaPan;
@@ -1153,7 +1158,12 @@ table 50004 Evento
                     lt_LineaEventos."Coste Total" := lt_LineaEventos."Coste Directo" + lt_LineaEventos."Coste Indirecto Recursos";
                     lt_LineaEventos."Precio Propuesto" := 0;
                     // Fin ADV007
-                    IF "Total Ninos" <> 0 THEN lt_LineaEventos."Coste Total Unitario" := lt_LineaEventos."Coste Total" / "Total Ninos";
+                    IF "Total Ninos" <> 0 THEN
+                        lt_LineaEventos."Coste Total Unitario" := lt_LineaEventos."Coste Total" / "Total Ninos"
+                    ELSE IF lt_LineaEventos.Cantidad <> 0 THEN
+                        lt_LineaEventos."Coste Total Unitario" := lt_LineaEventos."Coste Total" / lt_LineaEventos.Cantidad
+                    ELSE
+                        lt_LineaEventos."Coste Total Unitario" := 0;
                     IF lt_LineaEventos."Tipo Margen" = lt_LineaEventos."Tipo Margen"::Importe THEN // Inicio ADV005
                         // ADV005 lt_LineaEventos."Precio Propuesto":= lt_LineaEventos."Coste Directo"  + (lt_LineaEventos.Cantidad * lt_LineaEventos."Valor Margen")
                         // ADV007 IF lt_LineaEventos."Precio Propuesto" = 0 THEN
