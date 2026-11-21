@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="es-ES" original="CP - Functionality.g.xlf">
+    <body>
+      <group id="body"><trans-unit id="Report 2765968593 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sandach in Recipes and Subrecipes</source>
+          <target>Sandach en recetas y subrecetas</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - Property Caption</note>
+        </trans-unit><trans-unit id="Report 2765968593 - NamedType 3509878702" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Circular reference. This branch was not expanded.</source>
+          <target>Referencia circular. No se ha desplegado esta rama.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType CycleLbl</note>
+        </trans-unit><trans-unit id="Report 2765968593 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <target>Descripción</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType DescriptionLbl</note>
+        </trans-unit><trans-unit id="Report 2765968593 - NamedType 2359003977" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <target>N.º producto</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType ItemLbl</note>
+        </trans-unit><trans-unit id="Report 2765968593 - NamedType 3072453408" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Level</source>
+          <target>Nivel</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType LevelLbl</note>
+        </trans-unit><trans-unit id="Report 2765968593 - NamedType 4243124488" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item %1 could not be found while reviewing the recipe. Parent item: %2.</source>
+          <target>No se encontró el producto %1 al revisar la receta. Producto padre: %2.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = item number, %2 = parent item number (blank for the root)</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType MissingItemErr</note>
+        </trans-unit><trans-unit id="Report 2765968593 - NamedType 1314000525" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No</source>
+          <target>No</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType NoLbl</note>
+        </trans-unit><trans-unit id="Report 2765968593 - NamedType 4046088670" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Notes</source>
+          <target>Observaciones</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType NoteLbl</note>
+        </trans-unit><trans-unit id="Report 2765968593 - NamedType 4174857554" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Parent Item</source>
+          <target>Producto padre</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType ParentLbl</note>
+        </trans-unit><trans-unit id="Report 2765968593 - NamedType 1708636126" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Replenishment System</source>
+          <target>Sistema de reposición</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType ReplenishmentLbl</note>
+        </trans-unit><trans-unit id="Report 2765968593 - NamedType 3040577680" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sandach in Recipes and Subrecipes</source>
+          <target>Sandach en recetas y subrecetas</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType ReportTitleLbl</note>
+        </trans-unit><trans-unit id="Report 2765968593 - NamedType 3713597300" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sandach</source>
+          <target>Sandach</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType SandachLbl</note>
+        </trans-unit><trans-unit id="Report 2765968593 - NamedType 266261836" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Select a recipe item.</source>
+          <target>Selecciona un producto para consultar su receta.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType SelectItemErr</note>
+        </trans-unit><trans-unit id="Report 2765968593 - NamedType 4212456975" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Yes</source>
+          <target>Sí</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType YesLbl</note>
+        </trans-unit><trans-unit id="Report 2765968593 - Control 2346885236 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Options</source>
+          <target>Opciones</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - Control Options - Property Caption</note>
+        </trans-unit><trans-unit id="Report 2765968593 - Control 989443342 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the item whose recipe and subrecipes will be listed.</source>
+          <target>Especifica el producto cuya receta y subrecetas se mostrarán.</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - Control RootItemNo - Property ToolTip</note>
+        </trans-unit><trans-unit id="Report 2765968593 - Control 989443342 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Recipe Item No.</source>
+          <target>N.º producto de la receta</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - Control RootItemNo - Property Caption</note>
+        </trans-unit><trans-unit id="Report 2765968593 - ReportLayout 1820631518 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sandach in Recipes and Subrecipes</source>
+          <target>Sandach en recetas y subrecetas</target>
+          <note from="Developer" annotates="general" priority="2"/>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - ReportLayout RecipeLayout - Property Caption</note>
+        </trans-unit></group>
+    </body>
+  </file>
+</xliff>

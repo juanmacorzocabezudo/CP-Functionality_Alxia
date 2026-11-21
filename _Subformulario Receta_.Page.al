@@ -112,6 +112,7 @@ page 50001 "Subformulario Receta"
                     Caption = 'Cantidad por UMB';
                     ApplicationArea = All;
                     BlankZero = true;
+                    Editable = false;
                 }
                 field("Coste Calculado"; Rec."Coste Calculado")
                 {

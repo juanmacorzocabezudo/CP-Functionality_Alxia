@@ -9453,6 +9453,91 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AGRALAPlanificadorHDem - Control _Producto - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Report 517290981 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Discrepancias de cantidad en recetas</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - NamedType 1873491007" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cantidad por lote</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - NamedType BatchQuantityLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - NamedType 2446401141" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Descripción componente</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - NamedType ComponentDescriptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - NamedType 1914811600" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N.º componente</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - NamedType ComponentNoLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - NamedType 3033992167" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Tipo</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - NamedType ComponentTypeLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - NamedType 3360103659" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Se han corregido %1 registros de discrepancias.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - NamedType FixedRecordsMsg</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - NamedType 4248192774" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No se han encontrado discrepancias de cantidad.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - NamedType NoDiscrepanciesLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - NamedType 1118993151" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Descripción producto receta</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - NamedType ParentItemDescriptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - NamedType 1657500182" size-unit="char" translate="yes" xml:space="preserve">
+          <source>N.º producto receta</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - NamedType ParentItemNoLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - NamedType 94110324" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cantidad por UMB actual</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - NamedType QuantityPerActualLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - NamedType 2604253436" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cantidad por UMB esperada</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - NamedType QuantityPerExpectedLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - NamedType 2778928378" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Lote receta</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - NamedType RecipeBatchLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - NamedType 3040577680" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Discrepancias de cantidad en recetas</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - NamedType ReportTitleLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - NamedType 2705943359" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unidad de medida</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - NamedType UnitOfMeasureLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - Control 2346885236 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Opciones</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - Control Options - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - Control 4126789283 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Si se marca, después de imprimir el PDF, se corregirán automáticamente todas las discrepancias encontradas</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - Control AutoFixDiscrepancies - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Report 517290981 - Control 4126789283 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Arreglar discrepancias automáticamente después de imprimir</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Alx Recipe Quantity Audit - Control AutoFixDiscrepancies - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Report 3260250594 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>AlxAjustarFechaMovProducto</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -10367,6 +10452,96 @@
           <source>Ordena por fecha regis.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AlxPurchasesInvoiceBook - Control SortPostDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sandach in Recipes and Subrecipes</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - NamedType 3509878702" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Circular reference. This branch was not expanded.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType CycleLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - NamedType 3569966352" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType DescriptionLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - NamedType 2359003977" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType ItemLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - NamedType 3072453408" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Level</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType LevelLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - NamedType 4243124488" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item %1 could not be found while reviewing the recipe. Parent item: %2.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = item number, %2 = parent item number (blank for the root)</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType MissingItemErr</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - NamedType 1314000525" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType NoLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - NamedType 4046088670" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Notes</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType NoteLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - NamedType 4174857554" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Parent Item</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType ParentLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - NamedType 1708636126" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Replenishment System</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType ReplenishmentLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - NamedType 3040577680" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sandach in Recipes and Subrecipes</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType ReportTitleLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - NamedType 3713597300" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sandach</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType SandachLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - NamedType 266261836" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Select a recipe item.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType SelectItemErr</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - NamedType 4212456975" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Yes</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - NamedType YesLbl</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - Control 2346885236 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Options</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - Control Options - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - Control 989443342 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the item whose recipe and subrecipes will be listed.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - Control RootItemNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - Control 989443342 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Recipe Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - Control RootItemNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2765968593 - ReportLayout 1820631518 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sandach in Recipes and Subrecipes</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AlxRecipeSandach - ReportLayout RecipeLayout - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 2494339399 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Libro facturas emitidas - CP</source>

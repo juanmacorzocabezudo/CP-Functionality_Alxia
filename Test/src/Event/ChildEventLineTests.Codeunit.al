@@ -106,7 +106,7 @@ codeunit 80000 "Child Event Line Tests"
     EventLine."Coste Total Unitario" := 99;
     EventLine."Precio Propuesto" := 99;
     EventLine."Tipo Margen" := EventLine."Tipo Margen"::Porcentaje;
-    EventLine."Valor Margen" := 25;
+    EventLine."Valor Margen" := 20;
     EventLine.Modify(false);
     CreateComponent(EventLine, Recipe, 8);
 
@@ -116,7 +116,7 @@ codeunit 80000 "Child Event Line Tests"
     Assert.AreEqual(8, EventLine."Coste Directo", 'Direct cost must reflect event components.');
     Assert.AreEqual(8, EventLine."Coste Total", 'Total cost must not retain a previous value.');
     Assert.AreEqual(4, EventLine."Coste Total Unitario", 'Without children, unit cost must use line quantity.');
-    Assert.AreEqual(5, EventLine."Precio Propuesto", 'Percentage margin must use the updated unit cost.');
+    Assert.AreEqual(5, EventLine."Precio Propuesto", 'A 20% margin must be calculated from the proposed sale price.');
     EventLine."Tipo Margen" := EventLine."Tipo Margen"::Importe;
     EventLine."Valor Margen" := 2;
     EventLine.Modify(false);

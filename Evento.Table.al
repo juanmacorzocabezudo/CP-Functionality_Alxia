@@ -1251,7 +1251,7 @@ table 50004 Evento
                   IF lt_LineaEventos."Tipo Margen" = lt_LineaEventos."Tipo Margen"::Importe THEN
                     lt_LineaEventos."Precio Propuesto":= lt_LineaEventos."Coste Directo"  + (lt_LineaEventos.Cantidad * lt_LineaEventos."Valor Margen")
                   ELSE IF lt_LineaEventos."Tipo Margen" = lt_LineaEventos."Tipo Margen"::Porcentaje THEN
-                    lt_LineaEventos."Precio Propuesto":= lt_LineaEventos."Coste Directo" * (1 + lt_LineaEventos."Valor Margen"/100);
+                        lt_LineaEventos."Precio Propuesto":= lt_LineaEventos."Coste Directo" * (1 + lt_LineaEventos."Valor Margen"/100);
                   lt_LineaEventos."Precio Propuesto" := ROUND((lt_LineaEventos."Precio Propuesto"  / ("Total Adultos" + "Total Ninos")) + lt_LineaEventos."Coste Indirecto Pan" + lt_LineaEventos."Precio Venta Recursos",GLSetup."Amount Rounding Precision");
                   //lt_LineaEventos.VALIDATE("Precio Real",lt_LineaEventos."Precio Propuesto");
                   lt_LineaEventos.MODIFY;

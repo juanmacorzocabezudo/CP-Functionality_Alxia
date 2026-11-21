@@ -215,9 +215,18 @@ table 50002 "Lineas Evento"
         field(15; "Tipo Margen"; Option)
         {
             OptionMembers = Porcentaje,Importe;
+
+            trigger OnValidate()
+            begin
+                lfu_CalculaPrecioPropuesto;
+            end;
         }
         field(16; "Valor Margen"; Decimal)
         {
+            trigger OnValidate()
+            begin
+                lfu_CalculaPrecioPropuesto;
+            end;
         }
         field(17; "Coste Indirecto Recursos"; Decimal)
         {
@@ -436,18 +445,8 @@ table 50002 "Lineas Evento"
                             lt_lincom."Cantidad por Lote" := ROUND(cantidadComp, 1, '>');
                             IF (lt_lincom.Type = lt_lincom.Type::Resource) AND (lt_lincom."Resource Usage Type" = lt_lincom."Resource Usage Type"::Fixed) THEN
                                 lt_lincom.VALIDATE("Quantity per", lt_lincom."Cantidad por Lote")
-                            ELSE BEGIN
-                                IF Rec.Cantidad <> 0 THEN // Inicio ADV001
-                                // Línea eliminada lt_lincom.VALIDATE("Quantity per",lt_lincom."Cantidad por Lote"/Rec.Cantidad)
-                                BEGIN
-                                    gt_lincom := lt_lincom;
-                                    gfu_CalcularEscalado(gt_lincom);
-                                    lt_lincom := gt_lincom
-                                END
-                                // Fin ADV001
-                                ELSE
-                                    lt_lincom.VALIDATE("Quantity per", 0);
-                            END;
+                            ELSE
+                                lt_lincom.VALIDATE("Quantity per", lt_bom."Cantidad por Lote" / lt_producto."Lote Receta");
                             lt_lincom."Coste Lote" := lt_lincom."Cantidad por Lote" * lt_lincom.CosteUnitario;
                             IF lt_lincom."Linea Evento" <> 0 THEN lt_lincom.INSERT;
                             //++ KR 15/11/21
@@ -468,21 +467,11 @@ table 50002 "Lineas Evento"
                             lt_lincom.TRANSFERFIELDS(lt_bom);
                             lt_lincom."Codigo Evento" := "Codigo Evento";
                             lt_lincom."Linea Evento" := Rec.Linea;
-                            lt_lincom."Cantidad por Lote" := lt_lincom."Cantidad por Lote" * Cantidad / lt_producto."Lote Receta";
+                            lt_lincom."Cantidad por Lote" := lt_bom."Cantidad por Lote" * Cantidad / lt_producto."Lote Receta";
                             IF (lt_lincom.Type = lt_lincom.Type::Resource) AND (lt_lincom."Resource Usage Type" = lt_lincom."Resource Usage Type"::Fixed) THEN
                                 lt_lincom.VALIDATE("Quantity per", lt_lincom."Cantidad por Lote")
-                            ELSE BEGIN
-                                IF Rec.Cantidad <> 0 THEN // Inicio ADV001
-                                // Línea eliminada lt_lincom.VALIDATE("Quantity per",lt_lincom."Cantidad por Lote"/Rec.Cantidad)
-                                BEGIN
-                                    gt_lincom := lt_lincom;
-                                    gfu_CalcularEscalado(gt_lincom);
-                                    lt_lincom := gt_lincom
-                                END
-                                // Fin ADV001
-                                ELSE
-                                    lt_lincom.VALIDATE("Quantity per", 0);
-                            END;
+                            ELSE
+                                lt_lincom.VALIDATE("Quantity per", lt_bom."Cantidad por Lote" / lt_producto."Lote Receta");
                             lt_lincom."Coste Lote" := lt_lincom."Cantidad por Lote" * lt_lincom.CosteUnitario;
                             IF lt_lincom."Linea Evento" <> 0 THEN lt_lincom.INSERT;
                             //++ KR 15/11/21
@@ -531,18 +520,8 @@ table 50002 "Lineas Evento"
                             lt_lincom."Cantidad por Lote" := ROUND(cantidadComp, 1, '>');
                             IF (lt_lincom.Type = lt_lincom.Type::Resource) AND (lt_lincom."Resource Usage Type" = lt_lincom."Resource Usage Type"::Fixed) THEN
                                 lt_lincom.VALIDATE("Quantity per", lt_lincom."Cantidad por Lote")
-                            ELSE BEGIN
-                                IF Rec.Cantidad <> 0 THEN // Inicio ADV001
-                                // Línea eliminada lt_lincom.VALIDATE("Quantity per",lt_lincom."Cantidad por Lote"/Rec.Cantidad)
-                                BEGIN
-                                    gt_lincom := lt_lincom;
-                                    gfu_CalcularEscalado(gt_lincom);
-                                    lt_lincom := gt_lincom
-                                END
-                                // Fin ADV001
-                                ELSE
-                                    lt_lincom.VALIDATE("Quantity per", 0);
-                            END;
+                            ELSE
+                                lt_lincom.VALIDATE("Quantity per", lt_bom."Cantidad por Lote" / lt_producto."Lote Receta");
                             lt_lincom."Coste Lote" := lt_lincom."Cantidad por Lote" * lt_lincom.CosteUnitario;
                             IF lt_lincom."Linea Evento" <> 0 THEN lt_lincom.INSERT;
                             //++ KR 15/11/21
@@ -563,21 +542,11 @@ table 50002 "Lineas Evento"
                             lt_lincom.TRANSFERFIELDS(lt_bom);
                             lt_lincom."Codigo Evento" := "Codigo Evento";
                             lt_lincom."Linea Evento" := Rec.Linea;
-                            lt_lincom."Cantidad por Lote" := lt_lincom."Cantidad por Lote" * Cantidad / lt_producto."Lote Receta";
+                            lt_lincom."Cantidad por Lote" := lt_bom."Cantidad por Lote" * Cantidad / lt_producto."Lote Receta";
                             IF (lt_lincom.Type = lt_lincom.Type::Resource) AND (lt_lincom."Resource Usage Type" = lt_lincom."Resource Usage Type"::Fixed) THEN
                                 lt_lincom.VALIDATE("Quantity per", lt_lincom."Cantidad por Lote")
-                            ELSE BEGIN
-                                IF Rec.Cantidad <> 0 THEN // Inicio ADV001
-                                // Línea eliminada lt_lincom.VALIDATE("Quantity per",lt_lincom."Cantidad por Lote"/Rec.Cantidad)
-                                BEGIN
-                                    gt_lincom := lt_lincom;
-                                    gfu_CalcularEscalado(gt_lincom);
-                                    lt_lincom := gt_lincom
-                                END
-                                // Fin ADV001
-                                ELSE
-                                    lt_lincom.VALIDATE("Quantity per", 0);
-                            END;
+                            ELSE
+                                lt_lincom.VALIDATE("Quantity per", lt_bom."Cantidad por Lote" / lt_producto."Lote Receta");
                             lt_lincom."Coste Lote" := lt_lincom."Cantidad por Lote" * lt_lincom.CosteUnitario;
                             IF lt_lincom."Linea Evento" <> 0 THEN lt_lincom.INSERT;
                             //++ KR 15/11/21
@@ -607,6 +576,14 @@ table 50002 "Lineas Evento"
             //ADV004 Fin
             TieneLineas := NOT lt_lincom.ISEMPTY;
         END;
+    end;
+
+    local procedure lfu_CalculaPrecioPropuesto()
+    begin
+        IF "Tipo Margen" = "Tipo Margen"::Importe THEN
+            "Precio Propuesto" := "Coste Total Unitario" + "Valor Margen"
+        ELSE
+            "Precio Propuesto" := "Coste Total Unitario" * (1 + "Valor Margen" / 100);
     end;
 
     local procedure lfu_CalculaImportes()
