@@ -15298,16 +15298,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension AlxiaItemList - Action Va&amp;riants2 - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 3323366294 - Control 1657182911 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
-          <source>Sub familia producto</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension AlxiaItemList - Control subCategoria - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 3323366294 - Control 3897298263 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
-          <source>Nombre sub familia</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension AlxiaItemList - Control _NombreSubFamilia - Property Caption</note>
-        </trans-unit>
         <trans-unit id="PageExtension 3323366294 - Control 2250847087 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
           <source>Último coste directo</source>
           <note from="Developer" annotates="general" priority="2"></note>

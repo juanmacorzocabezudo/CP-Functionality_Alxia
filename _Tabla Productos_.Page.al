@@ -97,19 +97,7 @@ page 50121 "Tabla Productos"
                 {
                     ApplicationArea = All;
                 }
-                field("Nombre familia"; Rec."Nombre Familia")
-                {
-                    ApplicationArea = All;
-                }
-                field("Nombre sub familia"; SubFamilia2.Description)
-                {
-                    ApplicationArea = All;
-                }
                 field("Familia producto"; Rec."Item Category Code")
-                {
-                    ApplicationArea = All;
-                }
-                field("Sub familia producto"; SubFamilia2.Code)
                 {
                     ApplicationArea = All;
                 }
@@ -120,8 +108,6 @@ page 50121 "Tabla Productos"
     UltProveedor: Record Vendor;
     Ubicacion: Record "Bin Content";
     Factura: Record "Purch. Inv. Line";
-    SubFamilia: Record "Item Category";
-    SubFamilia2: Record "Item Category";
     _StockDisponible: Decimal;
     trigger OnAfterGetRecord()
     begin
@@ -139,10 +125,6 @@ page 50121 "Tabla Productos"
         Ubicacion.Reset();
         Ubicacion.SetRange("Item No.", Rec."No.");
         if not Ubicacion.FindFirst()then Clear(Ubicacion);
-        SubFamilia.Reset();
-        SubFamilia.SetRange(Code, Rec."Item Category Code");
-        if not SubFamilia.FindFirst()then Clear(SubFamilia);
-        if SubFamilia."Parent Category" <> '' then if not SubFamilia2.Get(SubFamilia."Parent Category")then Clear(SubFamilia2);
         CalcularStockDisponible();
     end;
     local procedure CalcularStockDisponible()

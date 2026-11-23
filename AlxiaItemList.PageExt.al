@@ -12,26 +12,6 @@ pageextension 50000 AlxiaItemList extends "Item List"
             Caption = 'Familia producto';
             Visible = true;
         }
-        addafter("Item Category Code")
-        {
-            field("Nombre Familia"; Rec."Nombre Familia")
-            {
-                ApplicationArea = All;
-                Visible = true;
-            }
-            field(subCategoria; subCategoria)
-            {
-                ApplicationArea = All;
-                Caption = 'Sub familia producto';
-                Visible = true;
-            }
-            field(_NombreSubFamilia; _NombreSubFamilia)
-            {
-                Caption = 'Nombre sub familia';
-                Editable = false;
-                ApplicationArea = All;
-            }
-        }
         addbefore("Last Direct Cost")
         {
             field("Last Diret Cost2"; xgLastDirectCostDiscount)
@@ -279,18 +259,12 @@ pageextension 50000 AlxiaItemList extends "Item List"
     StyleTextDiferencia: Text;
     xgLastDirectCostDiscount: Decimal;
     _devAction: Boolean;
-    subCategoria: Code[20];
-    _nombreSubFamilia: Text[100];
     trigger OnOpenPage()
     begin
         if UserId = 'BC' then _devAction:=true;
     end;
     trigger OnAfterGetRecord()
-    var
-        ItemCat: Record "Item Category";
     begin
-        Clear(subCategoria);
-        Clear(_nombreSubFamilia);
         //ADV001 Añadir ultimo proveedor
         BuscarUltimoProveedor;
         //ADV001 Fin
@@ -301,12 +275,6 @@ pageextension 50000 AlxiaItemList extends "Item List"
         _Diferencia:=(Rec."Standard Cost" - Rec."Last Direct Cost");
         StyleTextDiferencia:='Standard';
         if _Diferencia < 0 then StyleTextDiferencia:='Unfavorable';
-        itemCat.Reset();
-        itemCat.SetRange(Code, Rec."Item Category Code");
-        if ItemCat.FindFirst()then begin
-            subCategoria:=ItemCat."Parent Category";
-            _nombreSubFamilia:=ItemCat.Description;
-        end;
     end;
     local procedure BuscarUltimoProveedor()
     var

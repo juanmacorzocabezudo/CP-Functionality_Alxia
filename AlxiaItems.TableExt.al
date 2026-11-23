@@ -229,6 +229,7 @@ tableextension 50006 AlxiaItems extends Item
         }
         field(50047; "Nombre Familia"; Text[100])
         {
+            AllowInCustomizations = Never;
             FieldClass = FlowField;
             Caption = 'Nombre famila';
             CalcFormula = lookup("Item Category".Description where(Code=FIELD("Item Category Code")));
