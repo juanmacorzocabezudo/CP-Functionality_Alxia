@@ -15253,16 +15253,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension AlxiaItemCard - Control Info. Calidad - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 3975375536 - Control 231643163 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
-          <source>Sub familia producto</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension AlxiaItemCard - Control Product Group Code - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 3975375536 - Control 3897298263 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
-          <source>Nombre sub familia</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension AlxiaItemCard - Control _NombreSubFamilia - Property Caption</note>
-        </trans-unit>
         <trans-unit id="PageExtension 3975375536 - Control 406403278 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
           <source>Stock disponible</source>
           <note from="Developer" annotates="general" priority="2"></note>

@@ -92,27 +92,6 @@ pageextension 50001 AlxiaItemCard extends "Item Card"
         }
         addafter("Item Category Code")
         {
-            field("Nombre Familia"; Rec."Nombre Familia")
-            {
-                ApplicationArea = All;
-            }
-            field("Product Group Code"; subCategoria)
-            {
-                Caption = 'Sub familia producto';
-                ApplicationArea = All;
-                TableRelation = "Item Category".Code;
-
-                trigger OnValidate()
-                begin
-                    BuscarNombreSubFamilia();
-                end;
-            }
-            field(_NombreSubFamilia; _NombreSubFamilia)
-            {
-                Caption = 'Nombre sub familia';
-                Editable = false;
-                ApplicationArea = All;
-            }
             field(AGRALAUbicacion1; Rec.AGRALAUbicacion1)
             {
                 ApplicationArea = All;
@@ -347,10 +326,9 @@ pageextension 50001 AlxiaItemCard extends "Item Card"
             }
         }
     }
-    var subCategoria: Code[20];
-    _nombreSubFamilia: Text[100];
-    _stockDisponible: Decimal;
-    _ModStandCost: Boolean;
+    var
+        _stockDisponible: Decimal;
+        _ModStandCost: Boolean;
     trigger OnOpenPage()
     var
         ItemNo: Text;
@@ -370,15 +348,7 @@ pageextension 50001 AlxiaItemCard extends "Item Card"
     xgLastDirectCostDiscount: Decimal;
     xgDiscountPercentage: Decimal;
     trigger OnAfterGetRecord()
-    var
-        ItemCat: Record "Item Category";
     begin
-        itemCat.Reset();
-        itemCat.SetRange(Code, Rec."Item Category Code");
-        if ItemCat.FindFirst()then begin
-            subCategoria:=ItemCat."Parent Category";
-            _nombreSubFamilia:=ItemCat.Description;
-        end;
         Clear(_stockDisponible);
         Rec.CalcFields(Inventory);
         Rec.CalcFields(AGRALAQtyAssemblyOrderLine);
@@ -420,15 +390,5 @@ pageextension 50001 AlxiaItemCard extends "Item Card"
         //Rec.VALIDATE("Last Direct Cost",rlPurchaseLine."Direct Unit Cost");
         //Rec.MODIFY();
         END;
-    end;
-    procedure BuscarNombreSubFamilia()
-    var
-        ItemCat: Record "Item Category";
-    begin
-        itemCat.Reset();
-        itemCat.SetRange(Code, subCategoria);
-        if ItemCat.FindFirst()then begin
-            _nombreSubFamilia:=ItemCat.Description;
-        end;
     end;
 }
