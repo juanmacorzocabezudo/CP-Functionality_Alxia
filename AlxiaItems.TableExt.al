@@ -135,8 +135,8 @@ tableextension 50006 AlxiaItems extends Item
 
             trigger OnValidate()
             begin
+                IF Rec.AGRALASandach AND NOT(Rec."Replenishment System" = Rec."Replenishment System"::Purchase)THEN ERROR('El producto no puede ser un producto intermedio o producto terminado, este producto su sistema de reposición es ensamblado');
                 AGRALASandachFuncion(Rec."No.");
-                IF NOT(Rec."Replenishment System" = Rec."Replenishment System"::Purchase)THEN ERROR('El producto no puede ser un producto intermedio o producto terminado, este producto su sistema de reposición es ensamblado');
             end;
         }
         field(50034; AGRALALastDirectCost; Decimal)
