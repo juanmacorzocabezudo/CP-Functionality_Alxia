@@ -251,6 +251,24 @@ pageextension 50000 AlxiaItemList extends "Item List"
                     end;
                 end;
             }
+            action(AGRALASandachEnRecetas)
+            {
+                ApplicationArea = All;
+                Caption = 'Sandach en recetas';
+                Image = Report;
+                Promoted = true;
+                PromotedCategory = Report;
+                PromotedIsBig = true;
+                ToolTip = 'Muestra los productos Sandach de la receta y subrecetas del producto seleccionado.';
+
+                trigger OnAction()
+                var
+                    RecipeSandach: Report AlxRecipeSandach;
+                begin
+                    RecipeSandach.SetRootItemNo(Rec."No.");
+                    RecipeSandach.RunModal();
+                end;
+            }
         }
     }
     var gc_ultimoProveedor: Code[10];

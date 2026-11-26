@@ -97,6 +97,11 @@ report 50015 AlxRecipeSandach
     SelectItemErr: Label 'Select a recipe item.';
     MissingItemErr: Label 'Item %1 could not be found while reviewing the recipe. Parent item: %2.', Comment = '%1 = item number, %2 = parent item number (blank for the root)';
 
+  procedure SetRootItemNo(NewRootItemNo: Code[20])
+  begin
+    RootItemNo := NewRootItemNo;
+  end;
+
   local procedure CollectRecipe()
   var
     RecipeItem: Record Item;

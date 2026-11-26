@@ -15293,6 +15293,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension AlxiaItemList - Action AGRALAInfoCalidad - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 3323366294 - Action 3541970994 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
+          <source>Muestra los productos Sandach de la receta y subrecetas del producto seleccionado.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension AlxiaItemList - Action AGRALASandachEnRecetas - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3323366294 - Action 3541970994 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
+          <source>Sandach en recetas</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension AlxiaItemList - Action AGRALASandachEnRecetas - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 3323366294 - Action 1687585988 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
           <source>Ingredientes</source>
           <note from="Developer" annotates="general" priority="2"></note>
